@@ -42,6 +42,6 @@ public class Order extends BaseEntity {
 
     private String code;
 
-    @OneToMany
-    private List<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails ;
 }
