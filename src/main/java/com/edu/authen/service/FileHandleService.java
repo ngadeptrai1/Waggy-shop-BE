@@ -1,5 +1,7 @@
 package com.edu.authen.service;
 
+import com.edu.authen.model.Product;
+import com.edu.authen.model.ProductImage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +12,7 @@ import java.util.Map;
 @Service
 public interface FileHandleService {
 
-    String storeFile(MultipartFile thumbnail) throws IOException;
     void storeFile(MultipartFile multipartFile , String fileName) throws IOException;
-    Map uploadCoudary(MultipartFile file) throws IOException;
+    void uploadCoudary(MultipartFile file, ProductImage image) throws IOException;
+    void uploadThumbnail(MultipartFile file, Product image) throws IOException;
 }

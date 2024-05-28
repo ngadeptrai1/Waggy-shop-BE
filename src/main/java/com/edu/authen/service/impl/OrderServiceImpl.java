@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
                 .fullName(order.getFullName())
                 .quantityProduct(order.getOrderDetails().size())
                 .status(OrderStatus.PENDING)
-                
+
                 .build();
 
 //        return orderRepository.save(order) ;
@@ -66,5 +66,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findByUserId(Long id) {
         return orderRepository.findAllByUserId(id);
+    }
+
+    @Override
+    public Order changeStatus(Order order, String status) {
+
+
+
+        return null;
     }
 }

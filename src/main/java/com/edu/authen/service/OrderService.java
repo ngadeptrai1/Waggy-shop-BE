@@ -13,4 +13,5 @@ public interface OrderService {
     Order create(OrderDTO order);
     Order update(OrderDTO order);
     List<Order> findByUserId(Long id);
+    Order changeStatus(Order order, String status);
 }

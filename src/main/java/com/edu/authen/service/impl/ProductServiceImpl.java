@@ -11,12 +11,15 @@ import com.edu.authen.model.ProductImage;
 import com.edu.authen.repository.ProductRepository;
 import com.edu.authen.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +36,9 @@ public class ProductServiceImpl implements ProductService {
     private final BrandService brandService;
 
     @Override
-    @Transactional(rollbackFor = {DataNotFoundException.class,IOException.class})
+    @Transactional(rollbackFor = {DataNotFoundException.class,IOException.class,NullPointerException.class})
     public Product saveProduct(ProductDTO product) throws IOException, IdNotFoundException {
+
         Brand brand = brandService.findById(product.getBrandId());
         Category category = categoryService.findById(product.getCategoryId());
 
@@ -44,21 +48,28 @@ public class ProductServiceImpl implements ProductService {
                 .category(category)
                 .brand(brand)
                 .description(product.getDescription())
-                .thumbnail(fileService.storeFile(product.getThumbnail()))
+                .thumbnail("")
                 .originPrice(product.getOriginPrice())
                 .salePrice(product.getSalePrice())
                 .quantity(product.getQuantity());
+
         Product entityProduct = productRepository.save(newProduct.build());
+        fileService.uploadThumbnail(product.getThumbnail(),entityProduct);
         List<ProductImage> listImages = new LinkedList<>();
-        entityProduct.setProductImages(listImages);
+
         if( product.getProductImages() != null || !product.getProductImages().isEmpty()){
             product.getProductImages().forEach(
                     image -> {
                         try {
                             ProductImage prImage = ProductImage.builder()
-                                    .name(fileService.storeFile(image))
+                                    .name("")
                                     .product(entityProduct).build();
-                          entityProduct.getProductImages().add(productImageService.save(prImage))  ;
+                                    fileService.uploadCoudary(image,prImage);
+                            while (prImage.getName().isBlank()){
+                                Thread.onSpinWait();
+                            }
+                                    prImage = productImageService.save(prImage);
+                                  listImages.add(prImage);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -67,8 +78,13 @@ public class ProductServiceImpl implements ProductService {
         }else{
             throw new DataNotFoundException("Images can not be null or empty !");
         }
+        while (entityProduct.getThumbnail().isBlank()){
+            Thread.onSpinWait();
+        }
+        entityProduct.setProductImages(listImages);
         return entityProduct;
     }
+
     @Override
     public Product updateProduct(ProductDTO product, Long id) {
         Product entity = productRepository.findById(id).orElseThrow(
