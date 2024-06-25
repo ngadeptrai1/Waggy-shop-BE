@@ -42,6 +42,7 @@ public class OrderDTO {
     @JsonProperty("attribute_discount")
     private Float attributeDiscount;
     private String code;
+    @Size(min = 1, max = 50, message = "List size must be between 1 and 50 elements")
     @JsonProperty(value = "order_details")
     private List<OrderDetailDTO> orderDetails;
 

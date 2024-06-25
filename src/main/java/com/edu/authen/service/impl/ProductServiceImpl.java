@@ -11,6 +11,7 @@ import com.edu.authen.model.ProductImage;
 import com.edu.authen.repository.ProductRepository;
 import com.edu.authen.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,8 +100,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(entity);
     }
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable).getContent();
     }
 
     @Override

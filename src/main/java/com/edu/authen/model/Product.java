@@ -29,9 +29,9 @@ public class Product extends BaseEntity {
 
     private String thumbnail;
 
-    private BigDecimal originPrice ;
+    private Double originPrice ;
 
-    private BigDecimal salePrice;
+    private Double salePrice;
 
     @ManyToOne
     @JoinColumn(name = "category_id" , referencedColumnName = "id")

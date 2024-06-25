@@ -8,6 +8,7 @@ import com.edu.authen.service.MailerService;
 import com.edu.authen.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -43,8 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userDao.findAll();
+    public List<User> findAll(Pageable pageable) {
+        return userDao.findAll(pageable).getContent();
     }
 
     @Override

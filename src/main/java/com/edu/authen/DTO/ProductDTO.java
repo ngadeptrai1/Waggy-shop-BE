@@ -38,12 +38,12 @@ public class ProductDTO implements Serializable {
     @Min(value = 0, message = "Product origin price must be greater than or equal to 0 ")
     @Max(value = 10000000 ,message = "Product origin price must be less than 10 000 000 " )
     @JsonProperty(value = "origin_price")
-    private BigDecimal originPrice;
+    private Double originPrice;
     @NotNull(message = "Product  sale price cannot be null")
     @Min(value = 0, message = "Product sale price must be greater than or equal to 0 ")
     @Max(value = 10000000 ,message = "Product sale price must be less than 10 000 000 " )
     @JsonProperty(value = "sale_price")
-    private BigDecimal salePrice;
+    private Double salePrice;
     @NotNull(message = "Category id  cannot be null")
     @Min(value = 0, message = "Category id is not valid ")
     @JsonProperty(value = "category_id")

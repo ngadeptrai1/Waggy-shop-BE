@@ -7,6 +7,7 @@ import com.edu.authen.model.Brand;
 import com.edu.authen.repository.BrandRepository;
 import com.edu.authen.service.BrandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     @Override
     public Brand findById(int id) {
-        return brandRepository.findById( id).orElseThrow(() -> {
+        return brandRepository.findById(id).orElseThrow(() -> {
            return new DataNotFoundException("Brand with id "+id + " Not found ");
         });
     }
@@ -58,8 +59,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+    public List<Brand> findAll(Pageable pageable) {
+        return brandRepository.findAll(pageable).getContent();
     }
 
     @Override

@@ -84,6 +84,8 @@ public class  RegistrationService {
             if(!u.isEnable()){
                 u.setEnable(true);
                 service.update(u);
+                confirm.setConfirmedAt(LocalDateTime.now());
+                tokenRepository.save(confirm);
             }
         }
 

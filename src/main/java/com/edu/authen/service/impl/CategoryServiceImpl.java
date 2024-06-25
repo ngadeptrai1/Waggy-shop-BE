@@ -7,6 +7,7 @@ import com.edu.authen.model.Category;
 import com.edu.authen.repository.CategoryRepository;
 import com.edu.authen.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 
@@ -47,8 +48,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<Category> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable).getContent();
     }
 
     @Override

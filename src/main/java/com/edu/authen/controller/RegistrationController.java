@@ -59,8 +59,5 @@ public class RegistrationController {
         return ResponseEntity.ok("Confirmed");
     }
 
-    @GetMapping("test")
-    ResponseEntity<?> get1(){
-        return ResponseEntity.ok(userService.findAll());
-    }
+
 }

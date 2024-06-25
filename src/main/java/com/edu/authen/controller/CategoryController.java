@@ -6,6 +6,9 @@ import com.edu.authen.model.Category;
 import com.edu.authen.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,10 +25,15 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping({"","/"})
-    public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(categoryService.findAll().stream().map(category -> {
-                    return convert(category);
-                }));
+    public ResponseEntity<?> getAll(@RequestParam("page") Optional<Integer> pageNum,
+                                    @RequestParam("size") Optional<Integer> size,
+                                    @RequestParam("sort")Optional<String> sort){
+        Pageable page = PageRequest.of(pageNum.orElse(0),size.orElse(5), Sort.by(sort.orElse("id")).descending());
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll(page));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping({"","/"})
