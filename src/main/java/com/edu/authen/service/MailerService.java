@@ -25,13 +25,13 @@ public class MailerService  {
             helper.setText(body, true);
             helper.setTo(to);
             helper.setSubject("Confirm your email");
-            helper.setFrom("ngadxph30395@fpt.edu.vn");
+            helper.setFrom("ngadeptrai");
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             LOGGER.error("failed to send email", e);
             throw new IllegalStateException("failed to send email");
         }
-
    }
+
 }
 

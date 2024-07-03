@@ -22,7 +22,7 @@ public class OrderDetailResponse {
 
     private int quantity;
 
-    private Long price;
+    private Double price;
 
     @JsonProperty(value = "total_money")
     private Double totalMoney;

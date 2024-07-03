@@ -41,7 +41,7 @@ public class CategoryController {
                                     BindingResult result){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            throw new DataInvalidException( "Err",errs);
+            throw new DataInvalidException( errs.isEmpty() ? "" : errs.get(0));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(convert(categoryService.save(category)));
     }
@@ -51,7 +51,7 @@ public class CategoryController {
                                     BindingResult result){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            throw new DataInvalidException( "Err",errs);
+            throw new DataInvalidException( errs.isEmpty() ? "" : errs.get(0));
         }
         return ResponseEntity.status(HttpStatus.OK).body(convert(categoryService.update(id,updateCate)));
     }

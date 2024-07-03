@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
             listItems.add(orderDetail);
         }
 
-        order.setOrderDetails(  detailRepo.saveAll(listItems));
+        order.setOrderDetails( detailRepo.saveAll(listItems));
         listItems = null;
         modelMapper.typeMap(Order.class,OrderResponse.class);
         OrderResponse response =  modelMapper.map(order,OrderResponse.class);
@@ -105,6 +105,7 @@ public class OrderServiceImpl implements OrderService {
                .totalMoney( (orderDetail.getQuantity()*orderDetail.getPrice()))
                .productId(orderDetail.getProduct().getId())
                .id(orderDetail.getId())
+               .price(orderDetail.getPrice())
                .build(); }).toList();
        response.setOrderDetails(responseList);
         return response;

@@ -1,6 +1,7 @@
 package com.edu.authen.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -44,6 +45,7 @@ public class OrderDTO {
     private String code;
     @Size(min = 1, max = 50, message = "List size must be between 1 and 50 elements")
     @JsonProperty(value = "order_details")
+    @Valid
     private List<OrderDetailDTO> orderDetails;
 
 }

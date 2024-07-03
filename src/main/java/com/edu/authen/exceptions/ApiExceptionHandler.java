@@ -46,7 +46,7 @@ public class ApiExceptionHandler {
     })
     public ResponseEntity<?> handleDataInvalidException(DataInvalidException ex){
         ApiException apiException =  new ApiException(
-                ex.getErr(),
+                ex.getMessage(),
                 HttpStatus.BAD_REQUEST,
                 ZonedDateTime.now()
         );
@@ -79,6 +79,15 @@ public class ApiExceptionHandler {
         ApiException apiException =  new ApiException(
                 "Data invalid ",
                 HttpStatus.BAD_REQUEST,
+                ZonedDateTime.now()
+        );
+        return ResponseEntity.badRequest().body(apiException);
+    }
+    @ExceptionHandler(value = FileException.class )
+    public ResponseEntity<?> fileException(FileException e){
+        ApiException apiException =  new ApiException(
+                e.getMessage(),
+                e.getStatus(),
                 ZonedDateTime.now()
         );
         return ResponseEntity.badRequest().body(apiException);

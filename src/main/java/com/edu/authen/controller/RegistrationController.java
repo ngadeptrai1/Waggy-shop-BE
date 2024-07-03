@@ -3,11 +3,14 @@ package com.edu.authen.controller;
 import com.edu.authen.DTO.RegistrationRequest;
 import com.edu.authen.DTO.AuthenticationRequest;
 import com.edu.authen.DTO.AuthenticationResponse;
+import com.edu.authen.DTO.Respones;
+import com.edu.authen.exceptions.DataInvalidException;
 import com.edu.authen.model.ConfirmationToken;
 import com.edu.authen.service.RegistrationService;
 import com.edu.authen.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -34,23 +37,38 @@ public class RegistrationController {
             ,BindingResult result){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            return ResponseEntity.badRequest().body(errs);
+            throw new DataInvalidException( errs.isEmpty() ? "" : errs.get(0));
         }
-    return ResponseEntity.ok(service.register(request));
+    try {
+        service.register(request);
+        return ResponseEntity.status(201)
+                .body(Respones.builder()
+                        .message(("Successful registration, please check your email to activate your account"))
+                        .status(201)
+                        .build());
+    }catch (Exception e){
+        System.out.println(e.getMessage());
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
     }
 
     @PostMapping("/authenticate")
    public ResponseEntity<?> register(
             @RequestBody @Valid AuthenticationRequest request ,
-            BindingResult result
-            ){
+            BindingResult result){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            return ResponseEntity.badRequest().body(errs);
+            throw new DataInvalidException( errs.isEmpty() ? "" : errs.get(0));
         }
+
         AuthenticationResponse res;
           res = service.authenticate(request);
-           return ResponseEntity.ok(res);
+           return ResponseEntity.ok(AuthenticationResponse.builder()
+                   .userName(res.getUserName())
+                   .token(res.getToken())
+                   .email(res.getEmail())
+                   .build());
     }
 
     @GetMapping("/confirm")

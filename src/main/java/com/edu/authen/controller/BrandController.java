@@ -48,7 +48,8 @@ public class BrandController {
 
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            throw new DataInvalidException( "Err",errs);
+            String mess = errs.isEmpty() ? "" : errs.get(0);;
+            throw new DataInvalidException( mess);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(convert(brandService.save(brand)));
     }
@@ -59,7 +60,7 @@ public class BrandController {
                                     @PathVariable Integer id){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            throw new DataInvalidException( "Err",errs);
+            throw new DataInvalidException( errs.isEmpty() ? "" : errs.get(0));
         }
         return ResponseEntity.status(HttpStatus.OK).body(convert(brandService.update(id , updateBrand)));
     }

@@ -20,7 +20,7 @@ public class OrderDetailDTO {
     @Min(value = 1 ,message = "Product id invalid")
     private Long productId;
 
-    @Min(value = 0 , message = "Product quantity must be greater than 0 ")
+    @Min(value = 1 , message = "Product quantity must be greater than 0 ")
     @Max(value = 1000 , message = "Product quantity must be less than 1000")
     private int quantity;
 }

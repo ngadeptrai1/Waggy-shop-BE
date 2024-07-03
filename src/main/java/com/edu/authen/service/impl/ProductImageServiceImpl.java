@@ -22,4 +22,9 @@ public class ProductImageServiceImpl implements ProductImageService {
     public List<ProductImage> findByProductId(Long id) {
         return productImageRepository.findAllByProductId(id);
     }
+
+    @Override
+    public List<ProductImage> saveAll(List<ProductImage> list) {
+        return productImageRepository.saveAll(list);
+    }
 }

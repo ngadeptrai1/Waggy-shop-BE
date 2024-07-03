@@ -1,6 +1,7 @@
 package com.edu.authen.controller;
 
 import com.edu.authen.DTO.OrderDTO;
+import com.edu.authen.exceptions.DataInvalidException;
 import com.edu.authen.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class OrderController {
             BindingResult result ){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            return ResponseEntity.badRequest().body(errs);
+          throw new DataInvalidException(errs.isEmpty() ? "" : errs.get(0));
         }
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(orderService.create(orderDTO));
@@ -56,10 +57,9 @@ public class OrderController {
                                          BindingResult result){
         if(result.hasErrors()){
             List<String> errs = result.getFieldErrors().stream().map(FieldError:: getDefaultMessage).toList();
-            return ResponseEntity.badRequest().body(errs);
+            throw new DataInvalidException(errs.isEmpty() ? "" : errs.get(0));
         }
         try {
-
             return ResponseEntity.status(HttpStatus.OK).body(orderService.update(orderDTO,id));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -78,7 +78,7 @@ public class OrderController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    } @GetMapping("{id}")
+    } @GetMapping("/{id}")
     public ResponseEntity<?> findOrdersByUser(@PathVariable("id") Long id) {
         try {
             return  ResponseEntity.status(HttpStatus.OK).body(orderService.findById(id));

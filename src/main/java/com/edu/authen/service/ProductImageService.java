@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProductImageService {
     ProductImage save (ProductImage productImage );
     List<ProductImage> findByProductId(Long id);
+    List<ProductImage> saveAll(List<ProductImage> list);
 }

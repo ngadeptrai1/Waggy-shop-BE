@@ -43,11 +43,10 @@ public class FileHandleServiceImpl implements FileHandleService  {
         }catch (IOException e){
             throw new IOException(e.getMessage());
         }
-
     }
 
     @Override
-@Async
+    @Async
     public void uploadCoudary(MultipartFile file , ProductImage image) throws IOException {
         try {
             Map data =  cloudinary.uploader().upload(file.getBytes(), Map.of());
@@ -56,6 +55,7 @@ public class FileHandleServiceImpl implements FileHandleService  {
         }catch (IOException ex){
             throw new IOException("Failed to upload file");
         }
+
     }
 
     @Override

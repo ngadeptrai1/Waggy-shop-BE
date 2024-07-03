@@ -1,10 +1,7 @@
 package com.edu.authen.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 
@@ -28,7 +25,7 @@ public class RegistrationRequest {
     private  String email;
 
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotBlank(message = "Name cannot be empty")
     @NotNull(message = "Name  cannot be null")
     @Size(min = 6 , max = 12, message = "`Name must be between 10 - 50 character")
     @JsonProperty(value = "full_name")

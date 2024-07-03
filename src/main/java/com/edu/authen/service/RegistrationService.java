@@ -51,7 +51,9 @@ public class  RegistrationService {
         token.setExpiredAt(LocalDateTime.now().plusMinutes(15));
         token.setUser(user);
         tokenRepository.save(token);
+
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token.getId().toString();
+
         mailService.sendEmail(user.getEmail(), buildEmail(user.getFullname(), link));
             return AuthenticationResponse.builder().token(jwtToken)
                     .build();
@@ -75,6 +77,8 @@ public class  RegistrationService {
         var user = service.findByAccountName(request.getAccountName()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken)
+                .email(user.getEmail())
+                .userName(user.getAccountName())
                 .build();
     }
 
