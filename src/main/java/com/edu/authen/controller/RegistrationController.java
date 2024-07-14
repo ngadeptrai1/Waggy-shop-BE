@@ -6,6 +6,7 @@ import com.edu.authen.DTO.AuthenticationResponse;
 import com.edu.authen.DTO.Respones;
 import com.edu.authen.exceptions.DataInvalidException;
 import com.edu.authen.model.ConfirmationToken;
+import com.edu.authen.service.CustomUserDetailService;
 import com.edu.authen.service.RegistrationService;
 import com.edu.authen.service.UserService;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class RegistrationController {
 
     private RegistrationService service;
 
-    private UserService userService;
+    private CustomUserDetailService userService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(

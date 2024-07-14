@@ -34,12 +34,7 @@ public class OrderDTO {
     private String address;
     private String note;
     private String status;
-    @JsonProperty(value = "total_money")
-    private Float totalMoney;
-    @JsonProperty(value = "discount_money")
-    private Float discountMoney;
-    @JsonProperty("quantity_product")
-    private int quantityProduct;
+
     @JsonProperty("attribute_discount")
     private Float attributeDiscount;
     private String code;

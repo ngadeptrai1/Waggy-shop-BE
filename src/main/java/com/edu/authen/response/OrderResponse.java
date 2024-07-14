@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -31,8 +32,9 @@ public class OrderResponse {
     @JsonProperty("attribute_discount")
     private Float attributeDiscount;
     private String code;
-
-    @JsonProperty(value = "cart_items")
+    @JsonProperty("created_date")
+    private LocalDateTime createdDate;
+    @JsonProperty(value = "order_details")
     private List<OrderDetailResponse> orderDetails;
 
 }

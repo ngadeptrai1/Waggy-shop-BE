@@ -1,6 +1,10 @@
 package com.edu.authen.config;
 
+import com.edu.authen.model.CustomUserDetail;
+import com.edu.authen.model.User;
+import com.edu.authen.service.CustomUserDetailService;
 import com.edu.authen.service.JwtService;
+import com.edu.authen.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    private final UserDetailsService detailService;
+    private final CustomUserDetailService detailService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -31,17 +35,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userName;
+        final Long userId;
         if( authHeader == null || !authHeader.startsWith("Bearer")){
-
             filterChain.doFilter(request,response);
             return;
         }
         jwt = authHeader.substring(7);
-    userName = jwtService.getUsernameFromToken(jwt);
-    if( userName != null && SecurityContextHolder.getContext().getAuthentication() == null ){
-        UserDetails userDetails =  this.detailService.loadUserByUsername(userName);
-        if(jwtService.validateToken(jwt)){
+         userId = jwtService.getIdUser(jwt);
+    if( userId != null && SecurityContextHolder.getContext().getAuthentication() == null ){
+        User user =  this.detailService.findById(userId);
+        UserDetails userDetails = new CustomUserDetail(user);
+        if(jwtService.validateToken(jwt,user)){
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null ,
                     userDetails.getAuthorities()

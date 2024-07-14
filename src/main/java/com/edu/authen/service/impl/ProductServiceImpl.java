@@ -11,6 +11,7 @@ import com.edu.authen.repository.ProductRepository;
 import com.edu.authen.response.ProductImageResponse;
 import com.edu.authen.response.ProductResponse;
 import com.edu.authen.service.*;
+import com.edu.authen.ultis.ProductSpecification;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -110,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
             Thread.onSpinWait();
         }
         entityProduct.setProductImages(productImageService.saveAll(listImages));
-        return changeModel(entityProduct);
+        return ProductResponse.fromProduct(entityProduct);
     }
 
     @Override
@@ -124,42 +122,23 @@ public class ProductServiceImpl implements ProductService {
         entity.setQuantity(product.getQuantity());
         entity.setOriginPrice(product.getOriginPrice());
         entity.setSalePrice(product.getSalePrice());
-        return changeModel(productRepository.save(entity) ) ;
+        return ProductResponse.fromProduct(productRepository.save(entity) ) ;
     }
     @Override
-    public Page<ProductResponse> findAll(Pageable pageable) {
-
-        Page<ProductResponse> page =   productRepository.findAll(pageable).map(product ->
-        {
-            return changeModel(product);
+    public Page<ProductResponse> findAll(Map<String, Object> filterCriteria, Pageable pageable) {
+        ProductSpecification spec = new ProductSpecification(filterCriteria);
+        Page<ProductResponse> page =   productRepository.findAll(spec,pageable).map(product -> {
+            return ProductResponse.fromProduct(product);
         });
         return page;
     }
 
+
+
     @Override
     public ProductResponse findById(Long id) {
-        return changeModel(productRepository.findById(id).orElseThrow(
+        return ProductResponse.fromProduct(productRepository.findById(id).orElseThrow(
                 () ->  new DataNotFoundException("Not found product with id  " + id)) ) ;
     }
-    private ProductResponse changeModel(Product product){
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .activate(product.isActivate())
-                .thumbnail(product.getThumbnail())
-                .brandId(product.getBrand().getId())
-                .categoryId(product.getCategory().getId())
-                .quantity(product.getQuantity())
-                .originPrice(product.getOriginPrice())
-                .salePrice(product.getSalePrice())
-                .productImages(product.getProductImages().stream().map(productImage -> {
-                    return ProductImageResponse.builder()
-                            .id(productImage.getId())
-                            .name(productImage.getName())
-                            .build();
-                }).collect(Collectors.toList()))
-                .build();
 
-    }
 }

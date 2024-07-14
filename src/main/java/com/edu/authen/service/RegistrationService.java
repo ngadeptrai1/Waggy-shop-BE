@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class  RegistrationService {
 
-    private final UserService service;
+    private final CustomUserDetailService service;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -68,11 +68,11 @@ public class  RegistrationService {
                     )
             );
         }catch (UsernameNotFoundException usernameNotFoundException) {
-           throw new UsernameNotFoundException("Không tìm thấy người dùng");
+           throw new UsernameNotFoundException("Username or password incorrect");
         } catch (BadCredentialsException badCredentialsException) {
-             throw new BadCredentialsException("Thông tin tài khoản hoặc mật khẩu không chính xác");
+             throw new BadCredentialsException("Username or password incorrect");
         } catch (DisabledException Exception) {
-             throw new DisabledException("Tài khoản của bạn bị khóa vui lòng liên hệ với admin để giải quyết ");
+             throw new DisabledException("Your account not active , please check your email to active accunt");
         }
         var user = service.findByAccountName(request.getAccountName()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);

@@ -25,8 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,15 +38,37 @@ import java.util.stream.Collectors;
 public class ProductController {
 
 private final ProductService productService;
+private static final Logger LOGGER = Logger.getLogger(ProductController.class.getName());
 
     @GetMapping("")
     public ResponseEntity<?> getAllProducts(@RequestParam("page") Optional<Integer> pageNum,
                                             @RequestParam("size") Optional<Integer> size,
-                                            @RequestParam("sort")Optional<String> sort){
-        Pageable page = PageRequest.of(pageNum.orElse(0),size.orElse(5), Sort.by(sort.orElse("id")).descending());
+                                            @RequestParam("sort") Optional<String> sort,
+                                            @RequestParam("direction") Optional<String> direction,
+                                            @RequestParam("category") Optional<String> category,
+                                            @RequestParam("brand") Optional<String> brand,
+                                            @RequestParam("name") Optional<String> name,
+                                            @RequestParam("minPrice") Optional<Double> minPrice,
+                                            @RequestParam("maxPrice") Optional<Double> maxPrice) {
+        Map<String, Object> filterCriteria = new HashMap<>();
+        category.ifPresent(value -> filterCriteria.put("category", value));
+        brand.ifPresent(value -> filterCriteria.put("brand", value));
+        name.ifPresent(value -> filterCriteria.put("name", value));
+        minPrice.ifPresent(value -> filterCriteria.put("minPrice", value));
+        maxPrice.ifPresent(value -> filterCriteria.put("maxPrice", value));
+        // Default direction to DESC if invalid value is provided
+        Sort.Direction sortDirection;
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(page));
-        }catch (Exception e){
+            sortDirection = Sort.Direction.fromString(direction.orElse("DESC"));
+        } catch (IllegalArgumentException e) {
+            sortDirection = Sort.Direction.DESC;
+        }
+        Pageable page = PageRequest.of(pageNum.orElse(0), size.orElse(5),
+                Sort.by(sortDirection, sort.orElse("id")));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(filterCriteria,page));
+        } catch (Exception e) {
+            LOGGER.severe("Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

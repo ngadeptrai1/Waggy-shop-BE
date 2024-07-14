@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public interface ProductService {
     ProductResponse saveProduct(ProductDTO product  ) throws IOException;
     ProductResponse updateProduct(ProductDTO product , Long id);
-    Page<ProductResponse> findAll (Pageable pageable);
+    Page<ProductResponse> findAll (Map<String, Object> filterCriteria, Pageable pageable);
+//    Page<ProductResponse> productShop (Pageable pageable,String cateName,String brandName,);
     ProductResponse findById(Long id);
 }

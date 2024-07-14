@@ -18,7 +18,7 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,42 +45,5 @@ public class User implements UserDetails {
     private Timestamp updateDate;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.isAdmin()){
-            return Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        }else
-            return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return accountName;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !blocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enable;
-    }
 }

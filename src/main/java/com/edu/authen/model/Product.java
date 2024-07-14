@@ -31,6 +31,7 @@ public class Product extends BaseEntity {
 
     private Double originPrice ;
 
+    @Column(name = "sale_price")
     private Double salePrice;
 
     @ManyToOne

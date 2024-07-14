@@ -1,6 +1,10 @@
 package com.edu.authen.service;
 
+import com.edu.authen.DTO.LikeDTO;
+import com.edu.authen.model.Like;
 import com.edu.authen.model.User;
+import com.edu.authen.response.ProductResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +13,9 @@ import java.util.Optional;
 
 @Service
 public interface UserService {
-  Optional< User> findByEmail(String email);
-  Optional< User> findByAccountName(String account);
-  User save(User user);
-  List<User> findAll(Pageable pageable);
-  User update(User u);
 
+  List<User> findAll(Pageable pageable);
+
+  Page<ProductResponse> getProductsUserLike(Long userId,Pageable pageable );
+  void likeProduct(LikeDTO like);
 }

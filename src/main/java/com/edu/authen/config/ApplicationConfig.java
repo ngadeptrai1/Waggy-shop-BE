@@ -1,5 +1,7 @@
 package com.edu.authen.config;
 
+import com.edu.authen.model.CustomUserDetail;
+import com.edu.authen.service.CustomUserDetailService;
 import com.edu.authen.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,16 +20,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig  {
-  private final  UserService userDao;
+  private final CustomUserDetailService userDao;
 
     private static final String USER_NOT_FOUND = "User with %s not found";
 
     @Bean
     public UserDetailsService userDetailsService(){
-           return username -> userDao.findByAccountName(username)
+           return username -> new CustomUserDetail(userDao.findByAccountName(username)
                    .orElseThrow(()->
                            (new UsernameNotFoundException(
-                                   String.format(USER_NOT_FOUND,username))));
+                                   String.format(USER_NOT_FOUND,username)))));
     }
 
     @Bean

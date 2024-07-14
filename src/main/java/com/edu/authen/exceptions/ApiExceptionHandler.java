@@ -1,6 +1,7 @@
 package com.edu.authen.exceptions;
 
 import com.edu.authen.repository.ProductRepository;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
