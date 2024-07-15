@@ -52,7 +52,7 @@ public class  RegistrationService {
         token.setUser(user);
         tokenRepository.save(token);
 
-        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token.getId().toString();
+        String link = "https://authen-hkxg.onrender.com/api/v1/auth/confirm?token=" + token.getId().toString();
 
         mailService.sendEmail(user.getEmail(), buildEmail(user.getFullname(), link));
             return AuthenticationResponse.builder().token(jwtToken)
