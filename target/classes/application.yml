@@ -33,10 +33,24 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 535160425613901
+            client-secret: b1b2cf6a4abe8f6d5df48cd7245025d3
+
+          google:
+            client-id: "417810170630-1960svakd53j9uf565vbmgu2a2vc88vr.apps.googleusercontent.com"
+            client-secret: "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"
+            scope:
+              - email
+              - profile
   mail:
       host : smtp.gmail.com
       port : 587

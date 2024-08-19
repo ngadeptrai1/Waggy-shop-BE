@@ -32,6 +32,8 @@ public class User{
 
     private String fullname;
 
+    private String providerId;
+
     private boolean enable = false;
 
     private boolean blocked = false;
