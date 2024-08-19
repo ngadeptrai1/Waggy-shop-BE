@@ -33,7 +33,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 
             .authorizeRequests(authorize -> authorize
                     .requestMatchers("/api/v1/auth/**", "api/v1/categories/**","/api/v1/brands"
-                            , "api/v1/products/**","/api/v1/products", "/uploads","api/v1/users/like")
+                            , "api/v1/products/**","api/v1/products", "/uploads","api/v1/users/like", "api/v1/categories")
                             .permitAll() // Allow public access
                     .anyRequest().authenticated()
                     // Require authentication for other requests

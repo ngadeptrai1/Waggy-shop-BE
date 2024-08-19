@@ -4,6 +4,7 @@ import com.edu.authen.DTO.RegistrationRequest;
 import com.edu.authen.DTO.AuthenticationRequest;
 import com.edu.authen.DTO.AuthenticationResponse;
 import com.edu.authen.model.ConfirmationToken;
+import com.edu.authen.model.CustomUserDetail;
 import com.edu.authen.model.User;
 import com.edu.authen.repository.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,8 @@ public class  RegistrationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .fullname(request.getFullName())
                 .build();
-    var jwtToken = jwtService.generateToken( service.save(user));
+        CustomUserDetail userDetail = new CustomUserDetail(service.save(user));
+    var jwtToken = jwtService.generateToken(userDetail );
     // add success and send email
         ConfirmationToken token = new ConfirmationToken();
         token.setId( UUID.randomUUID());
@@ -75,7 +77,8 @@ public class  RegistrationService {
              throw new DisabledException("Your account not active , please check your email to active accunt");
         }
         var user = service.findByAccountName(request.getAccountName()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        CustomUserDetail userDetail = new CustomUserDetail(user);
+        var jwtToken = jwtService.generateToken(userDetail);
         return AuthenticationResponse.builder().token(jwtToken)
                 .email(user.getEmail())
                 .userName(user.getAccountName())

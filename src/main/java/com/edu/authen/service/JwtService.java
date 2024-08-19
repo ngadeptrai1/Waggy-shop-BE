@@ -1,10 +1,12 @@
 package com.edu.authen.service;
 
+import com.edu.authen.model.CustomUserDetail;
 import com.edu.authen.model.User;
 import io.jsonwebtoken.*;
 
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
@@ -14,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -29,9 +32,12 @@ public class JwtService {
     }
 
     // tạo ra jwt token từ thông tin user đã được xác thực
-    public String generateToken(User userDetails) {
+    public String generateToken(CustomUserDetail userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, Long.toString( userDetails.getId()));
+        claims.put("roles", userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
+        return doGenerateToken(claims, Long.toString( userDetails.getUser().getId()));
     }
 
     // tạo ra jwt token từ thông tin user đã được xác thực và các claims được định nghĩa sẵn
@@ -67,7 +73,6 @@ public class JwtService {
 
     // kiểm tra xem jwt token đã hết hạn chưa
     private Boolean isTokenExpired(String token) {
-
         return extractClaim(token,Claims::getExpiration).before(new Date());
     }
 

@@ -72,19 +72,16 @@ public class OrderServiceImpl implements OrderService {
         .addMappings(mapper -> mapper.skip(Order::setTotalMoney));
        Order order = new Order();
        modelMapper.map(orderDTO,order);
-       Float prices = Float.valueOf(order.getOrderDetails().stream().mapToDouble(orderDetail -> {
-           return orderDetail.getPrice()*orderDetail.getQuantity();
-       }).sum()+"");
+
        order.setNote(orderDTO.getNote());
-       order.setTotalMoney(prices);
-       order.setDiscountMoney(prices);
+
         order.setQuantityProduct(orderDTO.getOrderDetails().size());
 
        order.setUser(user);
       order.setCreatedDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PENDING);
 
-      order =   orderRepository.save(order) ;
+      order = orderRepository.save(order) ;
         List<OrderDetail> listItems = new ArrayList<>();
         for (OrderDetailDTO detail:
              orderDTO.getOrderDetails()) {
@@ -101,8 +98,13 @@ public class OrderServiceImpl implements OrderService {
                     .build();
             listItems.add(orderDetail);
         }
-
         order.setOrderDetails( detailRepo.saveAll(listItems));
+        Float prices = Float.valueOf(order.getOrderDetails().stream().mapToDouble(orderDetail -> {
+            return orderDetail.getPrice()*orderDetail.getQuantity();
+        }).sum()+"");
+        order.setTotalMoney(prices);
+        order.setDiscountMoney(prices);
+        orderRepository.save(order);
         listItems = null;
         modelMapper.typeMap(Order.class,OrderResponse.class);
         OrderResponse response =  modelMapper.map(order,OrderResponse.class);
