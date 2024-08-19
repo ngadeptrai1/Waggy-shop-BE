@@ -35,8 +35,11 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                     .requestMatchers("/api/v1/auth/**", "api/v1/categories/**","/api/v1/brands"
                             , "api/v1/products/**","api/v1/products", "/uploads","api/v1/users/like", "api/v1/categories")
                             .permitAll() // Allow public access
+
                     .anyRequest().authenticated()
                     // Require authentication for other requests
+            ).oauth2Login(oauth2 -> oauth2
+                    .successHandler(customOAuth2SuccessHandler())
             )
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless configuration
@@ -60,4 +63,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         });
     return http.build();
 }
+    @Bean
+    CustomOAuth2SuccessHandler customOAuth2SuccessHandler(){
+        return new CustomOAuth2SuccessHandler();
+    }
 }
