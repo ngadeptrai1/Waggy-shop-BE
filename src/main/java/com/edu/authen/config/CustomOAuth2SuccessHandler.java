@@ -46,19 +46,19 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            newUser.setEnable(true);
            CustomUserDetail customUserDetail = new CustomUserDetail(newUser);
            // Save JWT in a secure HttpOnly cookie
-           Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
+           Cookie jwtCookie = new Cookie("token",  jwtService.generateToken(customUserDetail));
            jwtCookie.setHttpOnly(false);
-           jwtCookie.setDomain("waggy-petshop.netlify.app");
-           jwtCookie.setAttribute("SameSite","None"); // Adjust based on your needs
+           jwtCookie.setPath("/");
+           jwtCookie.setAttribute("SameSite","Lax"); // Adjust based on your needs
            response.addCookie(jwtCookie);
        }
       else{
            CustomUserDetail customUserDetail = new CustomUserDetail(user.get());
            // Save JWT in a secure HttpOnly cookie
-           Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
+           Cookie jwtCookie = new Cookie("token",  jwtService.generateToken(customUserDetail));
            jwtCookie.setHttpOnly(false);
-           jwtCookie.setDomain("waggy-petshop.netlify.app");
-           jwtCookie.setAttribute("SameSite","None"); // Adjust based on your needs
+           jwtCookie.setPath("/");
+           jwtCookie.setAttribute("SameSite","Lax"); // Adjust based on your needs
            response.addCookie(jwtCookie);
        }
 
