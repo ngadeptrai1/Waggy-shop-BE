@@ -50,6 +50,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            jwtCookie.setHttpOnly(false);
            jwtCookie.setSecure(false);
            jwtCookie.setPath("/");
+           jwtCookie.setDomain("waggy-petshop.netlify.app");
            response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=Lax", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
@@ -60,6 +61,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            jwtCookie.setHttpOnly(false);
            jwtCookie.setSecure(false);
            jwtCookie.setPath("/");
+           jwtCookie.setDomain("waggy-petshop.netlify.app");
            response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=Lax", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
