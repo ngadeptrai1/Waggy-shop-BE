@@ -47,17 +47,16 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            CustomUserDetail customUserDetail = new CustomUserDetail(newUser);
            // Save JWT in a secure HttpOnly cookie
            Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
-           jwtCookie.setPath("/");
-           jwtCookie.setDomain("waggy-petshop.netlify.app");
+           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; Secure; SameSite=None", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
       else{
            CustomUserDetail customUserDetail = new CustomUserDetail(user.get());
            // Save JWT in a secure HttpOnly cookie
            Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
-           jwtCookie.setPath("/");
-           jwtCookie.setDomain("waggy-petshop.netlify.app");
+           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; Secure; SameSite=None", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
+
        }
         // Redirect to frontend
         getRedirectStrategy().sendRedirect(request, response, "https://waggy-petshop.netlify.app");

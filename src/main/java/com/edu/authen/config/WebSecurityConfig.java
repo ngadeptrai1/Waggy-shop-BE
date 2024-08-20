@@ -56,9 +56,11 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                 corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE","OPTIONS"));
                 corsConfiguration.setAllowedHeaders(Arrays.asList("authorization","content-type","x-auth-token"));
                 corsConfiguration.setExposedHeaders(List.of("x-auth-token"));
+                corsConfiguration.getAllowCredentials();
                 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
                 source.registerCorsConfiguration("/**",corsConfiguration);
                 httpSecurityCorsConfigurer.configurationSource(source);
+
             }
         });
     return http.build();
