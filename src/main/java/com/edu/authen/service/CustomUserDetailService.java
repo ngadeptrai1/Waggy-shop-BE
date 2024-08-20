@@ -4,7 +4,6 @@ import com.edu.authen.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-@Service
 public interface CustomUserDetailService {
     Optional<User> findByEmail(String email);
     Optional< User> findByAccountName(String account);
