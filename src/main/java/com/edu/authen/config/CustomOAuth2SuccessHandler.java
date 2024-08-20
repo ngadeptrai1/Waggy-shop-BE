@@ -4,7 +4,6 @@ import com.edu.authen.model.CustomUserDetail;
 import com.edu.authen.model.User;
 import com.edu.authen.repository.UserRepository;
 import com.edu.authen.service.JwtService;
-import com.edu.authen.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +34,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 
         String provider = oauthToken.getAuthorizedClientRegistrationId();
+
         String providerId = oAuth2User.getName();
         // Generate JWT token
        Optional<User> user = userRepository.findByProviderId(providerId);
@@ -47,9 +47,10 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            CustomUserDetail customUserDetail = new CustomUserDetail(newUser);
            // Save JWT in a secure HttpOnly cookie
            Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
-           jwtCookie.setHttpOnly(true);
-           jwtCookie.setSecure(true);
+           jwtCookie.setHttpOnly(false);
+           jwtCookie.setSecure(false);
            jwtCookie.setPath("/");
+           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=Lax", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
       else{
@@ -59,7 +60,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            jwtCookie.setHttpOnly(false);
            jwtCookie.setSecure(false);
            jwtCookie.setPath("/");
-           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=None", jwtCookie.getName(), jwtCookie.getValue()));
+           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=Lax", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
         // Redirect to frontend
