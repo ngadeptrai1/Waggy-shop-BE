@@ -49,7 +49,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
            jwtCookie.setPath("/");
            jwtCookie.setDomain("waggy-petshop.netlify.app");
-           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=Lax", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
       else{
@@ -58,7 +57,6 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
            Cookie jwtCookie = new Cookie("123",  jwtService.generateToken(customUserDetail));
            jwtCookie.setPath("/");
            jwtCookie.setDomain("waggy-petshop.netlify.app");
-           response.setHeader("Set-Cookie", String.format("%s=%s; Path=/; HttpOnly; Secure; SameSite=Lax", jwtCookie.getName(), jwtCookie.getValue()));
            response.addCookie(jwtCookie);
        }
         // Redirect to frontend
