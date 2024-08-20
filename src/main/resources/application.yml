@@ -23,7 +23,11 @@
 #    show-sql: false
 #    hibernate:
 #      ddl-auto: none
-
+server:
+  servlet:
+    session:
+      cookie:
+        same-site : Lax
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
