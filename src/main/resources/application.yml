@@ -42,12 +42,12 @@ spring:
       client:
         registration:
           facebook:
-            client-id: 535160425613901
-            client-secret: b1b2cf6a4abe8f6d5df48cd7245025d3
+            client-id: 2762757607224410
+            client-secret: 0c4e1a10f59686c5bf5e223cd608d286
 
           google:
-            client-id: "417810170630-1960svakd53j9uf565vbmgu2a2vc88vr.apps.googleusercontent.com"
-            client-secret: "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"
+            client-id: "162967839763-9hfe200b16kn49vh3s0j8qe9baldb7d8.apps.googleusercontent.com"
+            client-secret: "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"
             scope:
               - email
               - profile

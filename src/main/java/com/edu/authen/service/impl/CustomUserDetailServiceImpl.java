@@ -5,14 +5,14 @@ import com.edu.authen.model.User;
 import com.edu.authen.repository.UserRepository;
 import com.edu.authen.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Optional;
-
-@Component
+@Service
 @RequiredArgsConstructor
 public class CustomUserDetailServiceImpl implements CustomUserDetailService {
+
 private final UserRepository userDao;
 
     @Override
